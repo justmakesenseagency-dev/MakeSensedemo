@@ -1,0 +1,6 @@
+{
+  "name": "AI Jamia International School",
+  "description": "AI Jamia International School provides modern English-medium education with Islamic values, Qur’an and Sunnah training for students from Nursery to Class 8.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
