@@ -23,12 +23,17 @@ export const SCHOOL_INFO = {
   educationType: 'Modern + Islamic Education',
 };
 
-// Replaceable image assets
+import heroCampusImg from '../assets/images/hero_school_campus_1792827343378.jpg';
+import smartClassImg from '../assets/images/smart_classroom_learning_1792827343553.jpg';
+import islamicStudyImg from '../assets/images/islamic_education_learning_1792827345129.jpg';
+import playgroundImg from '../assets/images/school_playground_activities_1792827344794.jpg';
+
+// Replaceable image assets (bundled by Vite for production)
 export const SCHOOL_IMAGES = {
-  heroCampus: '/src/assets/images/hero_school_campus_1792827343378.jpg',
-  smartClass: '/src/assets/images/smart_classroom_learning_1792827343553.jpg',
-  islamicStudy: '/src/assets/images/islamic_education_learning_1792827345129.jpg',
-  playground: '/src/assets/images/school_playground_activities_1792827344794.jpg',
+  heroCampus: heroCampusImg,
+  smartClass: smartClassImg,
+  islamicStudy: islamicStudyImg,
+  playground: playgroundImg,
 };
 
 export const TRUST_STRIP_ITEMS = [
