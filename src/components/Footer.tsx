@@ -159,13 +159,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry, lang }) => {
                   <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                   <div>
                     <div className="font-semibold text-white">Campus Location:</div>
-                    <div>Gwalior, Madhya Pradesh, India</div>
+                    <div>24 Bigha Road, Bahodapur Choraha, Gwalior, Madhya Pradesh, India</div>
                   </div>
                 </div>
 
                 <div className="pt-2">
                   <a
-                    href="https://www.google.com/maps/search/Al-Jamia+International+School+Gwalior"
+                    href="https://www.google.com/maps/search/Al-Jamia+International+School+24+Bigha+Road+Bahodapur+Choraha+Gwalior"
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-300 hover:text-amber-200"

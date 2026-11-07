@@ -55,14 +55,15 @@ export const EnquirySection = forwardRef<EnquirySectionRef, EnquirySectionProps>
 
   const buildWhatsAppUrl = (data: typeof formData) => {
     const text = encodeURIComponent(
-      `*Admission Enquiry - Al-Jamia International School (Gwalior)*\n\n` +
+      `*Admission Enquiry - Al-Jamia International School*\n` +
+        `*Campus: 24 Bigha Road, Bahodapur Choraha, Gwalior*\n\n` +
         `• *Parent / Guardian:* ${data.parentName.trim()}\n` +
         `• *Child Name:* ${data.childName.trim()}\n` +
         `• *Target Class:* ${data.targetClass}\n` +
         `• *Phone / WhatsApp:* ${data.phone.trim()}\n` +
         `• *Preferred Call Time:* ${data.preferredCallTime}\n` +
         (data.message.trim() ? `• *Questions / Note:* ${data.message.trim()}\n` : '') +
-        `\nAssalamu Alaikum, please guide us regarding admission availability, fee details, and campus visit.`
+        `\nAssalamu Alaikum, please guide us regarding admission availability, fee details, and campus visit at Bahodapur Choraha, Gwalior.`
     );
     return `https://wa.me/91${SCHOOL_INFO.phoneRaw}?text=${text}`;
   };
@@ -74,8 +75,8 @@ export const EnquirySection = forwardRef<EnquirySectionRef, EnquirySectionProps>
     const url = buildWhatsAppUrl(formData);
     setSubmittedData({ ...formData });
 
-    // Open WhatsApp
-    window.location.href = url;
+    // Open WhatsApp in new window safely
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   const handleReset = () => {
@@ -103,8 +104,11 @@ export const EnquirySection = forwardRef<EnquirySectionRef, EnquirySectionProps>
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight mb-3">
             {lang === 'hi' ? 'प्रवेश के लिए पूछताछ करें' : 'Start The Conversation.'}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600">
+          <p className="text-sm sm:text-base text-slate-600 mb-1.5">
             Submit your enquiry below. It connects directly with the Al-Jamia admissions desk on WhatsApp.
+          </p>
+          <p className="text-xs text-emerald-800 font-semibold">
+            Campus: 24 Bigha Road, Bahodapur Choraha, Gwalior
           </p>
         </div>
 
@@ -130,6 +134,8 @@ export const EnquirySection = forwardRef<EnquirySectionRef, EnquirySectionProps>
               <div className="space-y-3 mb-8">
                 <a
                   href={buildWhatsAppUrl(submittedData)}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full py-3.5 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm"
                 >
                   <MessageCircle className="w-5 h-5" />

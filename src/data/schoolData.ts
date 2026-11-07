@@ -7,7 +7,7 @@
 export const SCHOOL_INFO = {
   name: 'Al-Jamia International School',
   shortName: 'Al-Jamia',
-  location: 'Gwalior, Madhya Pradesh',
+  location: '24 Bigha Road, Bahodapur Choraha, Gwalior',
   tagline: 'Modern Education with Islamic Values.',
   heroSupporting:
     'An English-medium school for Nursery to Class 8, where children grow in knowledge, character and Imaan.',
@@ -23,7 +23,7 @@ export const SCHOOL_INFO = {
   medium: 'English Medium',
   educationType: 'Modern + Islamic Education',
   officeHours: '8:30 AM – 2:30 PM (Mon – Sat)',
-  address: 'Gwalior, Madhya Pradesh, India',
+  address: '24 Bigha Road, Bahodapur Choraha, Gwalior, Madhya Pradesh, India',
 };
 
 // Real School Photos & Logo extracted from the official brief
@@ -39,6 +39,7 @@ export const SCHOOL_IMAGES = {
   portraitA: '/assets/aistudio/image_e734ddb2.png',
   portraitB: '/assets/aistudio/image_5afb7726.png',
   portraitC: '/images/portrait_reference_c.jpg',
+  summerCampHero: '/images/summer_camp_coming_soon.jpg',
 };
 
 export const TRUST_POINTS = [
@@ -254,7 +255,7 @@ export const LEADERSHIP_PROFILES = [
     credentials: 'Ex Core Member’s HMO, Dawateislami India',
     description:
       'Providing guiding vision, moral mentorship, and values-based educational patronage to Al-Jamia International School.',
-    photo: SCHOOL_IMAGES.portraitA,
+    photo: SCHOOL_IMAGES.portraitC,
   },
   {
     role: 'Managing Director',
@@ -262,15 +263,15 @@ export const LEADERSHIP_PROFILES = [
     credentials: 'Member’s Versetal (U K)',
     description:
       'Leading institutional infrastructure, modern Smart Class learning environments, and comprehensive student advancement.',
-    photo: SCHOOL_IMAGES.portraitB,
+    photo: SCHOOL_IMAGES.portraitA,
   },
   {
-    role: 'Principal',
-    name: 'Principal',
-    credentials: 'Principal · Al-Jamia International School',
+    role: 'Head of School',
+    name: 'Office of the Principal',
+    credentials: 'Academic Administration & Pedagogy',
     description:
       'Directing curriculum implementation, disciplined pedagogy, faculty mentoring, and English-medium academic excellence.',
-    photo: SCHOOL_IMAGES.portraitC,
+    photo: SCHOOL_IMAGES.portraitB,
   },
 ];
 

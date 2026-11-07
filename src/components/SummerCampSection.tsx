@@ -94,7 +94,8 @@ export const SummerCampSection: React.FC<SummerCampSectionProps> = ({
     );
 
     setSubmittedData({ ...campForm });
-    window.location.href = `https://wa.me/91${SCHOOL_INFO.phoneRaw}?text=${text}`;
+    const waUrl = `https://wa.me/91${SCHOOL_INFO.phoneRaw}?text=${text}`;
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SCHOOL_INFO, SCHOOL_IMAGES, TRUST_POINTS } from '../data/schoolData';
+import { SCHOOL_INFO, SCHOOL_IMAGES } from '../data/schoolData';
 import { ArrowUpRight, Calendar, CheckCircle2, ShieldCheck, MapPin } from 'lucide-react';
 
 interface HeroSectionProps {
@@ -8,12 +8,9 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry, lang }) => {
-  const handleBookVisit = () => {
-    const text = encodeURIComponent(
-      `Assalamu Alaikum Al-Jamia International School Admissions Desk,\n\nI would like to book a campus visit to see the school facilities and understand admission for Nursery to Class 8 in Gwalior.\n\nPlease share the available days and timings.`
-    );
-    window.location.href = `https://wa.me/91${SCHOOL_INFO.phoneRaw}?text=${text}`;
-  };
+  const visitWhatsAppUrl = `https://wa.me/91${SCHOOL_INFO.phoneRaw}?text=${encodeURIComponent(
+    `Assalamu Alaikum Al-Jamia International School Admissions Desk,\n\nI would like to book a campus visit to 24 Bigha Road, Bahodapur Choraha, Gwalior to explore admission for Nursery to Class 8.\n\nPlease share the available days and timings.`
+  )}`;
 
   return (
     <section className="relative pt-10 pb-16 md:pt-16 md:pb-20 overflow-hidden bg-[#FDFBF7]">
@@ -25,32 +22,40 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry, lang })
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* Left Column: Official School Brand & Actions */}
           <div className="lg:col-span-7 flex flex-col items-start">
-            {/* Small eyebrow */}
+            {/* Small eyebrow: Swapped from previous h1 */}
             <div className="inline-flex items-center gap-2 mb-3 text-xs font-bold tracking-widest uppercase text-emerald-800">
               <span className="w-5 h-[1.5px] bg-amber-500" />
-              <span>AL-JAMIA INTERNATIONAL SCHOOL · GWALIOR</span>
+              <span>
+                {lang === 'hi'
+                  ? 'आधुनिक शिक्षा, इस्लामी संस्कारों के साथ'
+                  : 'MODERN EDUCATION WITH ISLAMIC VALUES'}
+              </span>
             </div>
 
-            {/* Headline per brief: Modern Education with Islamic Values */}
-            <h1 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-slate-900 tracking-tight leading-[1.12] mb-5">
+            {/* Headline: School Name swapped from previous span into prominent h1 */}
+            <h1 className="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight leading-[1.1] mb-3">
               {lang === 'hi' ? (
                 <>
-                  आधुनिक शिक्षा, <br />
+                  अल-जामिया{' '}
                   <span className="text-emerald-900 underline decoration-amber-400 decoration-wavy decoration-2 underline-offset-8">
-                    इस्लामी संस्कारों
-                  </span>{' '}
-                  के साथ।
+                    इंटरनेशनल स्कूल
+                  </span>
                 </>
               ) : (
                 <>
-                  Modern Education <br />
-                  with{' '}
+                  Al-Jamia{' '}
                   <span className="text-emerald-900 underline decoration-amber-400 decoration-wavy decoration-2 underline-offset-8">
-                    Islamic Values.
+                    International School
                   </span>
                 </>
               )}
             </h1>
+
+            {/* Confirmed Campus Address Badge */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 border border-amber-400/30 rounded-lg text-xs font-semibold text-slate-800 mb-4">
+              <MapPin className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+              <span>24 Bigha Road, Bahodapur Choraha, Gwalior</span>
+            </div>
 
             {/* Supporting line per brief */}
             <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed mb-7">
@@ -59,7 +64,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry, lang })
                 : SCHOOL_INFO.heroSupporting}
             </p>
 
-            {/* Action Buttons: Apply for Admission & Book a School Visit */}
+            {/* Action Buttons: Apply for Admission & Book a School Visit (Both Fixed and Clickable) */}
             <div className="flex flex-wrap items-center gap-3.5 mb-8 w-full sm:w-auto">
               <button
                 type="button"
@@ -70,14 +75,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry, lang })
                 <ArrowUpRight className="w-4 h-4 text-amber-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </button>
 
-              <button
-                type="button"
-                onClick={handleBookVisit}
+              <a
+                href={visitWhatsAppUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-semibold rounded-lg border border-slate-300 shadow-xs transition-colors cursor-pointer"
               >
                 <Calendar className="w-4 h-4 text-emerald-700" />
                 <span>{lang === 'hi' ? 'स्कूल विज़िट बुक करें' : 'Book a School Visit'}</span>
-              </button>
+              </a>
             </div>
 
             {/* Four short verified trust points per brief */}
@@ -92,7 +98,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry, lang })
               </div>
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                <span>Gwalior Campus</span>
+                <span title="24 Bigha Road, Bahodapur Choraha, Gwalior">Bahodapur Campus</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
@@ -101,29 +107,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry, lang })
             </div>
           </div>
 
-          {/* Right Column: Authentic Campus Photo with Real School Banner */}
+          {/* Right Column: Summer Camp 2027 Coming Soon Poster Banner */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
-              <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-slate-900 group">
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-xl bg-slate-900 group">
                 <img
-                  src={SCHOOL_IMAGES.campusGardenPath}
-                  alt="Al-Jamia International School campus garden and entrance pathway in Gwalior"
-                  className="w-full h-[380px] sm:h-[440px] object-cover transition-transform duration-700 group-hover:scale-103"
+                  src={SCHOOL_IMAGES.summerCampHero}
+                  alt="Summer Camp 2027 Coming Soon - 1 April at Al-Jamia International School Gwalior"
+                  className="w-full h-[400px] sm:h-[480px] object-cover transition-transform duration-700 group-hover:scale-103"
                   referrerPolicy="no-referrer"
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-[#071324]/85 via-transparent to-transparent pointer-events-none" />
 
-                {/* Bottom caption with authentic school badge */}
+                {/* Bottom caption with Summer Camp 2027 Coming Soon badge */}
                 <div className="absolute bottom-4 left-4 right-4 p-3.5 rounded-xl bg-[#071324]/90 backdrop-blur-md border border-amber-500/30 text-white">
                   <div className="flex items-center justify-between text-[11px] mb-1">
                     <span className="font-bold uppercase tracking-wider text-amber-300">
-                      Authentic Campus Photo
+                      Summer Camp 2027 · Coming Soon
                     </span>
-                    <span className="text-slate-400">Gwalior</span>
+                    <span className="text-emerald-400 font-semibold">Starts 1 April</span>
                   </div>
                   <p className="text-xs text-slate-200 leading-snug">
-                    Real landscaped campus grounds featuring the official Al-Jamia entrance banner and safe learning spaces.
+                    7 exciting skill modules: Martial Arts, Spoken English, Qur’an &amp; Duas, Calligraphy, Sports &amp; Smart Tech.
                   </p>
                 </div>
               </div>
