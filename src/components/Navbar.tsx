@@ -1,136 +1,162 @@
 import React, { useState, useEffect } from 'react';
-import { SCHOOL_INFO } from '../data/schoolData';
-import { Phone, MessageCircle, Menu, X, ArrowUpRight } from 'lucide-react';
+import { SCHOOL_INFO, SCHOOL_IMAGES } from '../data/schoolData';
+import { Phone, Menu, X, ArrowUpRight, Globe } from 'lucide-react';
 
 interface NavbarProps {
   onOpenEnquiry: () => void;
+  onOpenCamp: () => void;
+  lang: 'en' | 'hi';
+  onToggleLang: (lang: 'en' | 'hi') => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  onOpenEnquiry,
+  onOpenCamp,
+  lang,
+  onToggleLang,
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Academics', href: '#academics' },
-    { name: 'Islamic Education', href: '#islamic-education' },
-    { name: 'School Life', href: '#school-life' },
-    { name: 'Facilities', href: '#facilities' },
-    { name: 'Admissions', href: '#admissions' },
-    { name: 'FAQ', href: '#faq' },
+    { name: lang === 'hi' ? 'मुख्य' : 'Home', href: '#' },
+    { name: lang === 'hi' ? 'परिचय' : 'About', href: '#about' },
+    { name: lang === 'hi' ? 'शिक्षा' : 'Academics', href: '#academics' },
+    { name: lang === 'hi' ? 'दीनी तालीम' : 'Islamic Education', href: '#islamic-education' },
+    { name: lang === 'hi' ? 'सुविधाएं व गैलरी' : 'Facilities & Gallery', href: '#gallery' },
+    { name: lang === 'hi' ? 'सूचनाएं' : 'News', href: '#news' },
+    { name: lang === 'hi' ? 'समर कैंप' : 'Summer Camp', href: '#summer-camp' },
+    { name: lang === 'hi' ? 'प्रवेश' : 'Admissions', href: '#admissions' },
+    { name: lang === 'hi' ? 'संपर्क' : 'Contact', href: '#contact' },
   ];
 
   return (
-    <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-[#FDFBF7]/90 backdrop-blur-md shadow-sm border-b border-slate-200/70 py-3'
-            : 'bg-transparent py-5'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-6 md:gap-8">
-            {/* Zone 1: Brand Wordmark (Single text element) */}
+    <header
+      className={`sticky top-0 left-0 right-0 z-40 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-[#FDFBF7]/95 backdrop-blur-md shadow-sm border-b border-slate-200/80 py-2.5'
+          : 'bg-[#FDFBF7] py-3.5 border-b border-slate-100'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-4 lg:gap-8">
+          {/* Zone 1: Real School Logo + Official Name Al-Jamia */}
+          <a
+            href="#"
+            className="flex items-center gap-3 text-slate-900 group whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-emerald-600 rounded"
+            aria-label="Al-Jamia International School Home"
+          >
+            <div className="w-11 h-11 rounded-lg bg-white p-1 border border-amber-500/40 shadow-xs flex items-center justify-center shrink-0">
+              <img
+                src={SCHOOL_IMAGES.logo}
+                alt="Al-Jamia International School Logo"
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  const p = e.currentTarget.parentElement;
+                  if (p) p.innerText = 'AJ';
+                }}
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-display font-extrabold text-base sm:text-lg tracking-tight text-slate-900 leading-none">
+                Al-Jamia
+              </span>
+              <span className="text-[10px] sm:text-[11px] font-semibold tracking-wider text-emerald-800 uppercase leading-none mt-1">
+                International School · Gwalior
+              </span>
+            </div>
+          </a>
+
+          {/* Zone 2: Navigation Links (single-line, clean hover underline) */}
+          <nav
+            className="hidden xl:flex items-center gap-5 text-[13px] font-medium text-slate-700"
+            aria-label="Main Navigation"
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="whitespace-nowrap shrink-0 hover:text-emerald-800 transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-emerald-700 hover:after:w-full after:transition-all after:duration-200"
+              >
+                {link.name}
+              </a>
+            ))}
+          </nav>
+
+          {/* Zone 3: Language Toggle & Phone & Primary Action */}
+          <div className="flex items-center gap-3 shrink-0">
+            {/* Language Switcher (EN | हिन्दी) */}
+            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => onToggleLang('en')}
+                className={`px-2 py-1 rounded-md transition-colors ${
+                  lang === 'en'
+                    ? 'bg-white text-emerald-900 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title="Switch to English"
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                onClick={() => onToggleLang('hi')}
+                className={`px-2 py-1 rounded-md transition-colors ${
+                  lang === 'hi'
+                    ? 'bg-emerald-800 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+                title="हिंदी में देखें"
+              >
+                हिन्दी
+              </button>
+            </div>
+
+            {/* Direct Phone Call Button */}
             <a
-              href="#"
-              className="flex items-center gap-3 text-slate-900 group whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-emerald-600 rounded"
-              aria-label="AI Jamia International School Home"
+              href={SCHOOL_INFO.phoneDial}
+              className="hidden lg:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-colors py-1.5 px-2.5 rounded-md hover:bg-slate-100"
+              title="Call 93010 89001"
             >
-              <div className="w-10 h-10 rounded-lg bg-[#071324] border border-amber-500/40 flex items-center justify-center text-amber-400 shadow-sm transition-transform duration-200 group-hover:scale-105">
-                <svg
-                  className="w-5 h-5 text-amber-400"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M12 2L15 8.5L22 9L17 14L18.5 21L12 17.5L5.5 21L7 14L2 9L9 8.5L12 2Z" />
-                </svg>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-display font-extrabold text-base sm:text-lg tracking-tight text-slate-900 leading-none">
-                  AI JAMIA
-                </span>
-                <span className="text-[10px] sm:text-xs font-semibold tracking-wider text-emerald-800 uppercase leading-none mt-1">
-                  INTERNATIONAL SCHOOL
-                </span>
-              </div>
+              <Phone className="w-3.5 h-3.5 text-emerald-700" />
+              <span className="font-mono tabular-nums">{SCHOOL_INFO.phone}</span>
             </a>
 
-            {/* Zone 2: Navigation Links (single-line, clean hover underline) */}
-            <nav
-              className="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-700"
-              aria-label="Main Navigation"
+            {/* Primary Action Button (Single clear action) */}
+            <button
+              type="button"
+              onClick={onOpenEnquiry}
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-[#071324] hover:bg-[#0c2242] active:scale-[0.98] transition-all rounded-lg shadow-xs border border-amber-500/30 whitespace-nowrap shrink-0 cursor-pointer"
             >
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="whitespace-nowrap shrink-0 hover:text-emerald-800 transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-emerald-700 hover:after:w-full after:transition-all after:duration-200"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </nav>
+              <span>{lang === 'hi' ? 'प्रवेश के लिए आवेदन' : 'Apply for Admission'}</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-amber-400" />
+            </button>
 
-            {/* Zone 3: Direct Phone & Primary CTA */}
-            <div className="hidden sm:flex items-center gap-4 shrink-0">
-              <a
-                href={SCHOOL_INFO.phoneDial}
-                className="hidden md:inline-flex items-center gap-2 text-xs font-semibold text-slate-700 hover:text-emerald-800 transition-colors py-2 px-3 rounded-md hover:bg-slate-100"
-                title="Call 9301089001"
-              >
-                <Phone className="w-3.5 h-3.5 text-emerald-700" />
-                <span className="font-mono tabular-nums">{SCHOOL_INFO.phone}</span>
-              </a>
-
-              <button
-                type="button"
-                onClick={onOpenEnquiry}
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-semibold text-white bg-[#071324] hover:bg-[#0c2242] active:scale-[0.98] transition-all rounded-lg shadow-sm border border-amber-500/30 whitespace-nowrap shrink-0 cursor-pointer"
-              >
-                <span>APPLY NOW</span>
-                <ArrowUpRight className="w-4 h-4 text-amber-400" />
-              </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="flex sm:hidden items-center gap-2">
-              <button
-                type="button"
-                onClick={onOpenEnquiry}
-                className="px-3 py-1.5 text-xs font-bold text-white bg-[#071324] rounded-md border border-amber-500/40"
-              >
-                APPLY
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-slate-700 hover:text-slate-900 focus:outline-none"
-                aria-label={isMobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-                aria-expanded={isMobileMenuOpen}
-              >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
+            {/* Mobile Menu Hamburger */}
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="xl:hidden p-2 text-slate-700 hover:text-slate-900 focus:outline-none rounded-md hover:bg-slate-100"
+              aria-label={isMobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
-      </header>
+      </div>
 
-      {/* Mobile Full-Screen Navigation Drawer */}
+      {/* Mobile Drawer */}
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 z-50 bg-[#071324] text-white flex flex-col justify-between p-6 overflow-y-auto"
@@ -138,16 +164,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
           aria-modal="true"
         >
           <div>
-            <div className="flex items-center justify-between pb-6 border-b border-slate-800">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-400">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2L15 8.5L22 9L17 14L18.5 21L12 17.5L5.5 21L7 14L2 9L9 8.5L12 2Z" />
-                  </svg>
-                </div>
+            <div className="flex items-center justify-between pb-5 border-b border-slate-800">
+              <div className="flex items-center gap-3">
+                <img
+                  src={SCHOOL_IMAGES.logo}
+                  alt="Al-Jamia Logo"
+                  className="w-10 h-10 object-contain bg-white rounded p-1"
+                />
                 <div>
-                  <div className="font-display font-extrabold text-sm text-white">AI JAMIA</div>
-                  <div className="text-[10px] text-amber-300 font-semibold tracking-wider">INTERNATIONAL SCHOOL</div>
+                  <div className="font-display font-extrabold text-base text-white">
+                    Al-Jamia
+                  </div>
+                  <div className="text-[10px] text-amber-300 font-semibold tracking-wider">
+                    INTERNATIONAL SCHOOL · GWALIOR
+                  </div>
                 </div>
               </div>
               <button
@@ -160,13 +190,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               </button>
             </div>
 
-            <nav className="flex flex-col gap-4 py-8">
+            <nav className="flex flex-col gap-3 py-6">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-lg font-medium text-slate-200 hover:text-amber-300 py-1 border-b border-slate-800/40"
+                  className="text-base font-medium text-slate-200 hover:text-amber-300 py-1.5 border-b border-slate-800/40"
                 >
                   {link.name}
                 </a>
@@ -174,45 +204,36 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
             </nav>
           </div>
 
-          <div className="pt-6 border-t border-slate-800 flex flex-col gap-3">
+          <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
             <button
               type="button"
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 onOpenEnquiry();
               }}
-              className="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg text-center flex items-center justify-center gap-2"
+              className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg text-center flex items-center justify-center gap-2 text-sm"
             >
-              <span>APPLY NOW FOR ADMISSION</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <span>{lang === 'hi' ? 'प्रवेश के लिए आवेदन करें' : 'Apply for Admission'}</span>
+              <ArrowUpRight className="w-4 h-4 text-amber-300" />
             </button>
 
-            <div className="grid grid-cols-2 gap-3">
-              <a
-                href={SCHOOL_INFO.phoneDial}
-                className="py-3 px-3 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-lg text-center flex items-center justify-center gap-1.5"
-              >
-                <Phone className="w-3.5 h-3.5 text-emerald-400" />
-                <span>CALL SCHOOL</span>
-              </a>
+            <button
+              type="button"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                onOpenCamp();
+              }}
+              className="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-center text-xs"
+            >
+              <span>{lang === 'hi' ? 'समर कैंप 2027 विवरण' : 'Summer Camp 2027 Details'}</span>
+            </button>
 
-              <a
-                href={SCHOOL_INFO.whatsappUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="py-3 px-3 bg-emerald-900/60 hover:bg-emerald-900 border border-emerald-500/30 text-emerald-200 text-xs font-semibold rounded-lg text-center flex items-center justify-center gap-1.5"
-              >
-                <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
-                <span>WHATSAPP</span>
-              </a>
+            <div className="text-center text-xs text-slate-400 mt-1">
+              Gwalior · Nursery to Class 8 · English Medium
             </div>
-
-            <p className="text-[11px] text-slate-400 text-center mt-2">
-              Nursery – Class 8 · English Medium · Islamic Values
-            </p>
           </div>
         </div>
       )}
-    </>
+    </header>
   );
 };

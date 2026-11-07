@@ -1,5 +1,5 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
-import { SCHOOL_INFO, CLASS_OPTIONS } from '../data/schoolData';
+import { SCHOOL_INFO, CLASS_OPTIONS, CALL_TIME_OPTIONS } from '../data/schoolData';
 import { MessageCircle, Phone, CheckCircle, AlertCircle, ArrowUpRight, RotateCcw } from 'lucide-react';
 
 export interface EnquirySectionRef {
@@ -7,13 +7,17 @@ export interface EnquirySectionRef {
   scrollIntoView: () => void;
 }
 
-export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
+interface EnquirySectionProps {
+  lang: 'en' | 'hi';
+}
+
+export const EnquirySection = forwardRef<EnquirySectionRef, EnquirySectionProps>(({ lang }, ref) => {
   const [formData, setFormData] = useState({
     parentName: '',
-    studentName: '',
-    targetClass: 'Class 1',
+    childName: '',
+    targetClass: 'Select class',
     phone: '',
-    email: '',
+    preferredCallTime: 'Morning (9:00 AM – 12:00 PM)',
     message: '',
   });
 
@@ -35,33 +39,32 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
     if (!formData.parentName.trim()) {
       newErrors.parentName = 'Please enter parent or guardian name';
     }
-    if (!formData.studentName.trim()) {
-      newErrors.studentName = 'Please enter student name';
+    if (!formData.childName.trim()) {
+      newErrors.childName = 'Please enter child name';
     }
     const cleanPhone = formData.phone.replace(/\D/g, '');
     if (!cleanPhone || cleanPhone.length < 10) {
-      newErrors.phone = 'Please enter a valid 10-digit mobile number';
+      newErrors.phone = 'Please enter a valid 10-digit phone number (e.g. 98XXXXXXXX)';
     }
-    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+    if (formData.targetClass === 'Select class') {
+      newErrors.targetClass = 'Please select an admission class';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Construct structured WhatsApp URL
   const buildWhatsAppUrl = (data: typeof formData) => {
     const text = encodeURIComponent(
-      `*Admission Enquiry - AI Jamia International School*\n\n` +
-        `• *Student Name:* ${data.studentName.trim()}\n` +
-        `• *Target Class:* ${data.targetClass}\n` +
+      `*Admission Enquiry - Al-Jamia International School (Gwalior)*\n\n` +
         `• *Parent / Guardian:* ${data.parentName.trim()}\n` +
-        `• *Contact Phone:* ${data.phone.trim()}\n` +
-        (data.email.trim() ? `• *Email:* ${data.email.trim()}\n` : '') +
-        (data.message.trim() ? `• *Note / Query:* ${data.message.trim()}\n` : '') +
-        `\nAssalamu Alaikum, please guide us on the admission process and requirements.`
+        `• *Child Name:* ${data.childName.trim()}\n` +
+        `• *Target Class:* ${data.targetClass}\n` +
+        `• *Phone / WhatsApp:* ${data.phone.trim()}\n` +
+        `• *Preferred Call Time:* ${data.preferredCallTime}\n` +
+        (data.message.trim() ? `• *Questions / Note:* ${data.message.trim()}\n` : '') +
+        `\nAssalamu Alaikum, please guide us regarding admission availability, fee details, and campus visit.`
     );
-    return `https://wa.me/91${SCHOOL_INFO.whatsapp}?text=${text}`;
+    return `https://wa.me/91${SCHOOL_INFO.phoneRaw}?text=${text}`;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -71,7 +74,7 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
     const url = buildWhatsAppUrl(formData);
     setSubmittedData({ ...formData });
 
-    // Direct redirection to WhatsApp
+    // Open WhatsApp
     window.location.href = url;
   };
 
@@ -79,78 +82,77 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
     setSubmittedData(null);
     setFormData({
       parentName: '',
-      studentName: '',
-      targetClass: 'Class 1',
+      childName: '',
+      targetClass: 'Select class',
       phone: '',
-      email: '',
+      preferredCallTime: 'Morning (9:00 AM – 12:00 PM)',
       message: '',
     });
     setErrors({});
   };
 
   return (
-    <section id="enquiry-form-section" className="py-20 md:py-28 bg-[#FDFBF7] relative">
+    <section id="enquiry-form-section" className="py-16 md:py-24 bg-[#FDFBF7] relative border-t border-slate-200/60">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-emerald-800 mb-3">
             <span className="w-5 h-[1.5px] bg-amber-500" />
-            <span>Admissions Desk</span>
+            <span>{lang === 'hi' ? 'प्रवेश पूछताछ डेस्क' : 'Admission Enquiry Desk'}</span>
             <span className="w-5 h-[1.5px] bg-amber-500" />
           </div>
-          <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight mb-4">
-            START THE CONVERSATION.
+          <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight mb-3">
+            {lang === 'hi' ? 'प्रवेश के लिए पूछताछ करें' : 'Start The Conversation.'}
           </h2>
           <p className="text-sm sm:text-base text-slate-600">
-            Submit your enquiry below to connect directly with the AI Jamia Admissions Desk on WhatsApp. No complicated
-            portal or login required.
+            Submit your enquiry below. It connects directly with the Al-Jamia admissions desk on WhatsApp.
           </p>
         </div>
 
         {/* Enquiry Card Form */}
         <div className="bg-white rounded-2xl p-6 sm:p-10 border border-slate-200/90 shadow-lg">
           {submittedData ? (
-            /* Direct WhatsApp confirmation & re-trigger view */
+            /* Submission Confirmation Message as strictly specified in brief */
             <div className="py-6 text-center max-w-lg mx-auto">
               <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-5 border-2 border-emerald-300">
                 <CheckCircle className="w-8 h-8" />
               </div>
 
-              <h3 className="font-display font-bold text-2xl text-slate-900 mb-2">
-                Redirecting to WhatsApp...
+              <h3 className="font-display font-bold text-2xl text-slate-900 mb-3">
+                Enquiry Submitted Successfully!
               </h3>
-              <p className="text-sm text-slate-600 mb-6 leading-relaxed">
-                Your admission enquiry for <strong className="text-slate-900">{submittedData.studentName}</strong> (
-                {submittedData.targetClass}) has been compiled. If WhatsApp did not open automatically, tap the button
-                below:
-              </p>
 
-              {/* Direct Tap Link */}
+              {/* Exact text mandated by brief */}
+              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950 font-semibold text-sm leading-relaxed mb-6">
+                “Thank you! Your enquiry has reached the Al Jamia admissions desk. We will contact you shortly on the
+                number you shared.”
+              </div>
+
               <div className="space-y-3 mb-8">
                 <a
                   href={buildWhatsAppUrl(submittedData)}
-                  className="w-full py-4 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-base"
+                  className="w-full py-3.5 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  <span>OPEN IN WHATSAPP NOW</span>
+                  <span>OPEN CHAT ON WHATSAPP NOW</span>
                   <ArrowUpRight className="w-4 h-4 text-emerald-200" />
                 </a>
 
                 <a
                   href={SCHOOL_INFO.phoneDial}
-                  className="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 text-xs"
+                  className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 text-xs"
                 >
                   <Phone className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Call School Desk: {SCHOOL_INFO.phone}</span>
+                  <span>Or Call Admissions Desk: {SCHOOL_INFO.phone}</span>
                 </a>
               </div>
 
-              {/* Summary Box */}
+              {/* Summary */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-left text-xs text-slate-600 font-mono space-y-1 mb-6">
-                <div>• Student: {submittedData.studentName}</div>
-                <div>• Class: {submittedData.targetClass}</div>
                 <div>• Parent: {submittedData.parentName}</div>
+                <div>• Child: {submittedData.childName}</div>
+                <div>• Target Class: {submittedData.targetClass}</div>
                 <div>• Phone: {submittedData.phone}</div>
-                {submittedData.email && <div>• Email: {submittedData.email}</div>}
+                <div>• Preferred Call Time: {submittedData.preferredCallTime}</div>
               </div>
 
               <button
@@ -163,11 +165,11 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} noValidate className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Parent Name */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                     Parent / Guardian Name <span className="text-rose-600">*</span>
                   </label>
                   <input
@@ -178,7 +180,7 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
                       if (errors.parentName) setErrors({ ...errors, parentName: '' });
                     }}
                     placeholder="e.g. Mohammed Farooq"
-                    className={`w-full px-4 py-3 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none transition-colors ${
+                    className={`w-full px-4 py-2.5 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none transition-colors ${
                       errors.parentName
                         ? 'border-rose-400 focus:border-rose-500'
                         : 'border-slate-300 focus:border-emerald-600'
@@ -186,52 +188,59 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
                     required
                   />
                   {errors.parentName && (
-                    <p className="text-xs text-rose-600 mt-1.5 flex items-center gap-1">
-                      <AlertCircle className="w-3.5 h-3.5" />
+                    <p className="text-xs text-rose-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
                       <span>{errors.parentName}</span>
                     </p>
                   )}
                 </div>
 
-                {/* Student Name */}
+                {/* Child Name */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                    Student Name <span className="text-rose-600">*</span>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Child Name <span className="text-rose-600">*</span>
                   </label>
                   <input
                     type="text"
-                    value={formData.studentName}
+                    value={formData.childName}
                     onChange={(e) => {
-                      setFormData({ ...formData, studentName: e.target.value });
-                      if (errors.studentName) setErrors({ ...errors, studentName: '' });
+                      setFormData({ ...formData, childName: e.target.value });
+                      if (errors.childName) setErrors({ ...errors, childName: '' });
                     }}
                     placeholder="e.g. Zaid Farooq"
-                    className={`w-full px-4 py-3 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none transition-colors ${
-                      errors.studentName
+                    className={`w-full px-4 py-2.5 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none transition-colors ${
+                      errors.childName
                         ? 'border-rose-400 focus:border-rose-500'
                         : 'border-slate-300 focus:border-emerald-600'
                     }`}
                     required
                   />
-                  {errors.studentName && (
-                    <p className="text-xs text-rose-600 mt-1.5 flex items-center gap-1">
-                      <AlertCircle className="w-3.5 h-3.5" />
-                      <span>{errors.studentName}</span>
+                  {errors.childName && (
+                    <p className="text-xs text-rose-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      <span>{errors.childName}</span>
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Class Dropdown */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Class Dropdown (default: Select class) */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                     Admission Class <span className="text-rose-600">*</span>
                   </label>
                   <select
                     value={formData.targetClass}
-                    onChange={(e) => setFormData({ ...formData, targetClass: e.target.value })}
-                    className="w-full px-4 py-3 text-sm rounded-lg border border-slate-300 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-emerald-600 transition-colors"
+                    onChange={(e) => {
+                      setFormData({ ...formData, targetClass: e.target.value });
+                      if (errors.targetClass) setErrors({ ...errors, targetClass: '' });
+                    }}
+                    className={`w-full px-4 py-2.5 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none transition-colors ${
+                      errors.targetClass
+                        ? 'border-rose-400 focus:border-rose-500'
+                        : 'border-slate-300 focus:border-emerald-600'
+                    }`}
                   >
                     {CLASS_OPTIONS.map((cls) => (
                       <option key={cls} value={cls}>
@@ -239,13 +248,18 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
                       </option>
                     ))}
                   </select>
-                  <p className="text-[11px] text-slate-500 mt-1">Available from Nursery to Class 8</p>
+                  {errors.targetClass && (
+                    <p className="text-xs text-rose-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      <span>{errors.targetClass}</span>
+                    </p>
+                  )}
                 </div>
 
-                {/* Phone Number */}
+                {/* Phone / WhatsApp (with 98XXXXXXXX placeholder) */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                    Phone Number <span className="text-rose-600">*</span>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Phone / WhatsApp Number <span className="text-rose-600">*</span>
                   </label>
                   <input
                     type="tel"
@@ -254,8 +268,8 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
                       setFormData({ ...formData, phone: e.target.value });
                       if (errors.phone) setErrors({ ...errors, phone: '' });
                     }}
-                    placeholder="e.g. 9301089001"
-                    className={`w-full px-4 py-3 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none transition-colors ${
+                    placeholder="98XXXXXXXX"
+                    className={`w-full px-4 py-2.5 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none transition-colors ${
                       errors.phone
                         ? 'border-rose-400 focus:border-rose-500'
                         : 'border-slate-300 focus:border-emerald-600'
@@ -263,52 +277,43 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
                     required
                   />
                   {errors.phone && (
-                    <p className="text-xs text-rose-600 mt-1.5 flex items-center gap-1">
-                      <AlertCircle className="w-3.5 h-3.5" />
+                    <p className="text-xs text-rose-600 mt-1 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
                       <span>{errors.phone}</span>
                     </p>
                   )}
                 </div>
               </div>
 
-              {/* Email Field (Optional) */}
+              {/* Preferred Call Time per Brief */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                  Email Address <span className="text-slate-400 font-normal">(Optional)</span>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                  Preferred Call Time
                 </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => {
-                    setFormData({ ...formData, email: e.target.value });
-                    if (errors.email) setErrors({ ...errors, email: '' });
-                  }}
-                  placeholder="parent@example.com"
-                  className={`w-full px-4 py-3 text-sm rounded-lg border bg-slate-50/50 focus:bg-white focus:outline-none transition-colors ${
-                    errors.email
-                      ? 'border-rose-400 focus:border-rose-500'
-                      : 'border-slate-300 focus:border-emerald-600'
-                  }`}
-                />
-                {errors.email && (
-                  <p className="text-xs text-rose-600 mt-1.5 flex items-center gap-1">
-                    <AlertCircle className="w-3.5 h-3.5" />
-                    <span>{errors.email}</span>
-                  </p>
-                )}
+                <select
+                  value={formData.preferredCallTime}
+                  onChange={(e) => setFormData({ ...formData, preferredCallTime: e.target.value })}
+                  className="w-full px-4 py-2.5 text-sm rounded-lg border border-slate-300 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-emerald-600 transition-colors"
+                >
+                  {CALL_TIME_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              {/* Message Field */}
+              {/* Query / Note */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
-                  Message or Specific Questions <span className="text-slate-400 font-normal">(Optional)</span>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                  Message or Specific Question <span className="text-slate-400 font-normal">(Optional)</span>
                 </label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Ask about school timings, smart classroom methods, Islamic studies, or campus visit..."
-                  className="w-full px-4 py-3 text-sm rounded-lg border border-slate-300 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-emerald-600 transition-colors"
+                  placeholder="Ask about school visit timing, curriculum, or admission documents..."
+                  className="w-full px-4 py-2.5 text-sm rounded-lg border border-slate-300 bg-slate-50/50 focus:bg-white focus:outline-none focus:border-emerald-600 transition-colors"
                 />
               </div>
 
@@ -316,14 +321,14 @@ export const EnquirySection = forwardRef<EnquirySectionRef>((_, ref) => {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-4 px-6 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white font-bold rounded-xl shadow-md border border-emerald-400/30 transition-all flex items-center justify-center gap-2.5 cursor-pointer text-sm sm:text-base group"
+                  className="w-full py-3.5 px-6 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white font-bold rounded-xl shadow-md border border-emerald-400/30 transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
                 >
-                  <MessageCircle className="w-5 h-5 text-white" />
-                  <span className="tracking-wide">SEND ENQUIRY VIA WHATSAPP (9301089001)</span>
-                  <ArrowUpRight className="w-4 h-4 text-emerald-200 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <MessageCircle className="w-4 h-4 text-emerald-200" />
+                  <span>SUBMIT ENQUIRY VIA WHATSAPP (93010 89001)</span>
+                  <ArrowUpRight className="w-4 h-4 text-emerald-200" />
                 </button>
-                <p className="text-[11px] text-slate-500 text-center mt-2.5">
-                  Direct connection to school admissions on WhatsApp · Zero signup or portal required
+                <p className="text-[11px] text-slate-500 text-center mt-2">
+                  Connects directly to the Al-Jamia admissions desk in Gwalior · No signup required
                 </p>
               </div>
             </form>

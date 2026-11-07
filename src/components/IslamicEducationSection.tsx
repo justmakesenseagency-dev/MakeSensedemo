@@ -1,109 +1,131 @@
 import React from 'react';
-import { SCHOOL_IMAGES } from '../data/schoolData';
-import { BookOpen, Heart, Shield, CheckCircle } from 'lucide-react';
+import { ISLAMIC_CURRICULUM_TABLE, SCHOOL_IMAGES } from '../data/schoolData';
+import { BookOpen, CheckCircle, ShieldCheck } from 'lucide-react';
 
-export const IslamicEducationSection: React.FC = () => {
+interface IslamicEducationSectionProps {
+  lang: 'en' | 'hi';
+}
+
+export const IslamicEducationSection: React.FC<IslamicEducationSectionProps> = ({ lang }) => {
   return (
     <section
       id="islamic-education"
-      className="py-24 md:py-32 bg-[#071324] text-white relative overflow-hidden bg-islamic-dark-pattern"
+      className="py-16 md:py-24 bg-[#071324] text-white relative overflow-hidden bg-islamic-dark-pattern"
     >
-      {/* Decorative ambient light */}
-      <div className="absolute top-1/4 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
-          {/* Left Column: Heading, Copy, & Core Pillars */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-14">
+          {/* Left Column: Heading & Core Details */}
           <div className="lg:col-span-6">
-            <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-amber-400 mb-4">
+            <div className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-amber-400 mb-3">
               <span className="w-5 h-[1.5px] bg-amber-400" />
-              <span>ISLAMIC EDUCATION</span>
+              <span>{lang === 'hi' ? 'दीनी तालीम' : 'Islamic Education'}</span>
             </div>
 
-            <h2 className="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight mb-6">
-              ROOTED IN FAITH. <br />
-              <span className="text-amber-300">PREPARED FOR LIFE.</span>
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-white tracking-tight leading-tight mb-4">
+              {lang === 'hi' ? (
+                <>
+                  ईमान की मज़बूती, <br />
+                  <span className="text-amber-300">अच्छे अख़लाक़ का निर्माण।</span>
+                </>
+              ) : (
+                <>
+                  Rooted in Faith. <br />
+                  <span className="text-amber-300">Prepared for Life.</span>
+                </>
+              )}
             </h2>
 
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-8">
-              Alongside modern education, students are introduced to Qur’an and Sunnah learning, helping them develop a
-              strong foundation of faith, values and character.
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed mb-6">
+              Alongside modern English-medium academics, students receive structured Qur’an recitation, Tajweed, daily
+              Duas, Seerah stories, and Tarbiyah, helping them develop strong Imaan and moral integrity.
             </p>
 
-            {/* Feature Checklist */}
-            <div className="space-y-4 mb-8">
+            <div className="space-y-3 mb-6">
               {[
-                {
-                  title: 'Qur’an & Tajweed Instruction',
-                  desc: 'Structured recitation practice with accurate pronunciation and love for Allah’s words.',
-                },
-                {
-                  title: 'Sunnah & Daily Adab',
-                  desc: 'Practical etiquette, truthfulness, kindness to family and peers, and essential daily Duas.',
-                },
-                {
-                  title: 'Character Development (Tarbiyah)',
-                  desc: 'Instilling sincere humility, moral courage, empathy, and positive habits from an early age.',
-                },
-                {
-                  title: 'Strong Imaan & Identity',
-                  desc: 'Equipping young minds with firm self-worth, spiritual clarity, and moral resilience.',
-                },
+                'Nazira & Qur’an recitation with accurate pronunciation',
+                'Tajweed fundamentals taught with patience and care',
+                'Essential Masnoon Duas and daily Islamic manners (Adab)',
+                'Seerah of Prophet Muhammad (ﷺ) and character lessons (Akhlaq)',
               ].map((item) => (
-                <div key={item.title} className="flex items-start gap-3.5 p-3.5 rounded-lg bg-white/5 border border-white/10">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 mt-2 shrink-0" />
-                  <div>
-                    <h3 className="text-sm font-bold text-white mb-0.5">{item.title}</h3>
-                    <p className="text-xs text-slate-300 leading-relaxed">{item.desc}</p>
-                  </div>
+                <div key={item} className="flex items-start gap-2.5 text-xs text-slate-200">
+                  <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>{item}</span>
                 </div>
               ))}
             </div>
 
-            <div className="inline-flex items-center gap-3 text-xs text-amber-200/90 font-medium tracking-wide">
-              <span>English Medium Instruction</span>
-              <span aria-hidden="true" className="text-slate-600">·</span>
-              <span>Islamic Core Morals</span>
-              <span aria-hidden="true" className="text-slate-600">·</span>
-              <span>Nursery to Class 8</span>
+            <div className="p-3.5 rounded-lg bg-white/5 border border-emerald-500/30 text-xs text-emerald-300/95 font-medium flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>Integrated into regular daily timetables from Nursery to Class 8.</span>
             </div>
           </div>
 
-          {/* Right Column: Arched Islamic Architectural Visual Frame */}
+          {/* Right Column: Visual Frame */}
           <div className="lg:col-span-6 flex justify-center">
             <div className="relative w-full max-w-md">
-              {/* Islamic Arch Shaped Frame with Gold Border */}
-              <div className="relative rounded-t-full rounded-b-2xl overflow-hidden border-2 border-amber-400/40 shadow-2xl bg-slate-900 group">
+              <div className="rounded-2xl overflow-hidden border border-amber-400/30 shadow-xl bg-slate-900">
                 <img
-                  src={SCHOOL_IMAGES.islamicStudy}
-                  alt="Islamic education and library study corner at AI Jamia International School"
-                  className="w-full h-[460px] sm:h-[520px] object-cover transition-transform duration-700 group-hover:scale-105"
+                  src={SCHOOL_IMAGES.classroomDesks}
+                  alt="Al-Jamia classroom and learning environment in Gwalior"
+                  className="w-full h-[360px] object-cover"
                   referrerPolicy="no-referrer"
-                  loading="lazy"
                 />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-[#071324] via-transparent to-transparent pointer-events-none" />
-
-                {/* Bottom Overlay Card */}
-                <div className="absolute bottom-6 left-6 right-6 p-5 rounded-xl bg-[#071324]/90 backdrop-blur-md border border-amber-500/30 text-white text-center">
-                  <div className="text-xs font-bold uppercase tracking-widest text-amber-300 mb-1">
-                    Tarbiyah &amp; Knowledge
+                <div className="p-4 bg-[#071324] border-t border-amber-500/20 text-center">
+                  <div className="text-xs font-bold text-amber-300 uppercase tracking-wider mb-1">
+                    Authentic Class Environment · Gwalior
                   </div>
                   <p className="text-xs text-slate-300">
-                    Nurturing hearts with the light of the Qur’an while building sharp, analytical minds.
+                    Dedicated learning space integrating contemporary subjects and daily moral study.
                   </p>
                 </div>
               </div>
-
-              {/* Decorative Corner Stars */}
-              <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300">
-                <span className="text-xs">✦</span>
-              </div>
-              <div className="absolute -bottom-3 -right-3 w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300">
-                <span className="text-xs">✦</span>
-              </div>
             </div>
+          </div>
+        </div>
+
+        {/* Compact Curriculum Table per Brief Requirements */}
+        <div className="bg-white/5 rounded-2xl p-6 sm:p-8 border border-white/10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+            <div>
+              <h3 className="font-display font-bold text-xl text-white">
+                Islamic Syllabus &amp; Curriculum Outline
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Overview of Islamic learning modules across school grade levels
+              </p>
+            </div>
+            <span className="text-[11px] text-emerald-300 bg-emerald-500/15 px-2.5 py-1 rounded border border-emerald-400/30 self-start sm:self-auto font-medium">
+              Academic Year 2026–27
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-white/10 text-amber-400 font-semibold uppercase tracking-wider">
+                  <th className="py-3 px-3">Class / Age Group</th>
+                  <th className="py-3 px-3">Topics Taught</th>
+                  <th className="py-3 px-3">Periods per Week</th>
+                  <th className="py-3 px-3">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10 text-slate-300">
+                {ISLAMIC_CURRICULUM_TABLE.map((row) => (
+                  <tr key={row.level} className="hover:bg-white/5 transition-colors">
+                    <td className="py-3.5 px-3 font-semibold text-white whitespace-nowrap">
+                      {row.level}
+                    </td>
+                    <td className="py-3.5 px-3">{row.topics}</td>
+                    <td className="py-3.5 px-3 font-mono text-emerald-300 whitespace-nowrap">
+                      {row.periods}
+                    </td>
+                    <td className="py-3.5 px-3 text-[11px] text-slate-400 italic">
+                      {row.status}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
