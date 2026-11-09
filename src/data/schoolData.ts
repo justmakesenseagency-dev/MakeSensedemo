@@ -265,14 +265,6 @@ export const LEADERSHIP_PROFILES = [
       'Leading institutional infrastructure, modern Smart Class learning environments, and comprehensive student advancement.',
     photo: SCHOOL_IMAGES.portraitA,
   },
-  {
-    role: 'Head of School',
-    name: 'Office of the Principal',
-    credentials: 'Academic Administration & Pedagogy',
-    description:
-      'Directing curriculum implementation, disciplined pedagogy, faculty mentoring, and English-medium academic excellence.',
-    photo: SCHOOL_IMAGES.portraitB,
-  },
 ];
 
 export const TEN_PARENT_FAQS = [

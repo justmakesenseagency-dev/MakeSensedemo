@@ -95,28 +95,30 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Zone 3: Language Toggle & Phone & Primary Action */}
           <div className="flex items-center gap-3 shrink-0">
             {/* Language Switcher (EN | हिन्दी) */}
-            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs font-semibold">
+            <div className="flex items-center bg-slate-200/80 p-0.5 rounded-lg border border-slate-300/80 text-xs font-semibold shadow-xs">
               <button
                 type="button"
-                onClick={() => onToggleLang('en')}
-                className={`px-2 py-1 rounded-md transition-colors ${
+                onClick={() => onToggleLang(lang === 'en' ? 'hi' : 'en')}
+                className={`px-2.5 py-1 rounded-md transition-all font-bold cursor-pointer select-none ${
                   lang === 'en'
-                    ? 'bg-white text-emerald-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-emerald-800 text-white shadow-xs scale-100'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
                 }`}
-                title="Switch to English"
+                title={lang === 'en' ? 'Switch to Hindi (हिन्दी)' : 'Switch to English'}
+                aria-label="Toggle language to English or Hindi"
               >
                 EN
               </button>
               <button
                 type="button"
-                onClick={() => onToggleLang('hi')}
-                className={`px-2 py-1 rounded-md transition-colors ${
+                onClick={() => onToggleLang(lang === 'hi' ? 'en' : 'hi')}
+                className={`px-2.5 py-1 rounded-md transition-all font-bold cursor-pointer select-none ${
                   lang === 'hi'
-                    ? 'bg-emerald-800 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-emerald-800 text-white shadow-xs scale-100'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
                 }`}
-                title="हिंदी में देखें"
+                title={lang === 'hi' ? 'Switch to English' : 'हिंदी में देखें'}
+                aria-label="Toggle language to Hindi or English"
               >
                 हिन्दी
               </button>

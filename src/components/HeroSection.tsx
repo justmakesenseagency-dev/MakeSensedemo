@@ -194,8 +194,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenEnquiry, lang })
                   ))}
                 </div>
 
-                {/* Subtle dark gradient overlay for minimalist readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#071324]/90 via-transparent to-black/20 pointer-events-none" />
+                {/* Yellowish Sunlight & Warm Lens Flare Effect Overlay */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_90%_12%,rgba(253,224,71,0.40),rgba(251,191,36,0.24)_38%,rgba(245,158,11,0.08)_68%,transparent_82%)] pointer-events-none mix-blend-screen" />
+                <div className="absolute -top-12 -right-12 w-52 h-52 rounded-full bg-gradient-to-br from-yellow-300/45 via-amber-400/25 to-transparent blur-2xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-3/4 h-3/4 bg-gradient-to-bl from-amber-300/20 via-yellow-200/5 to-transparent pointer-events-none" />
+
+                {/* Subtle dark gradient overlay for minimalist bottom readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#071324]/90 via-transparent to-black/10 pointer-events-none" />
 
                 {/* Minimalist Top Tag & Counter */}
                 <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">

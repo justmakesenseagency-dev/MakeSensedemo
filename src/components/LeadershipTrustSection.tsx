@@ -26,7 +26,7 @@ export const LeadershipTrustSection: React.FC<LeadershipTrustSectionProps> = ({ 
         </div>
 
         {/* Leadership Profiles Grid with Confirmed Photos */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-8">
           {LEADERSHIP_PROFILES.map((profile) => (
             <div
               key={profile.role}

@@ -35,6 +35,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ lang }) => {
                 className="w-full h-[360px] sm:h-[420px] object-cover transition-transform duration-700 group-hover:scale-103"
                 referrerPolicy="no-referrer"
               />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_90%_15%,rgba(253,224,71,0.30),rgba(251,191,36,0.15)_35%,transparent_75%)] pointer-events-none mix-blend-screen" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#071324]/85 via-transparent to-transparent pointer-events-none" />
 
               <div className="absolute bottom-4 left-4 right-4 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-slate-900">
